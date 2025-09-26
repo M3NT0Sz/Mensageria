@@ -2,34 +2,6 @@
 
 Aplicação Node.js para envio e consumo de mensagens utilizando RabbitMQ.
 
-
-## Projeto Futuro: Sistema de Notificações para Corridas de Carro (tipo Uber)
-
-### Descrição
-Este projeto pode ser expandido para simular um sistema de corridas semelhante ao Uber, utilizando mensageria para comunicação entre passageiros e motoristas.
-
-### Como funcionaria
-- Passageiros solicitam corridas (publicam mensagens em uma fila de corridas pendentes).
-- Motoristas recebem notificações em tempo real sobre novas solicitações (consomem da fila de corridas pendentes).
-- Ao aceitar uma corrida, o motorista publica uma mensagem em uma fila específica do passageiro, notificando-o.
-- O sistema pode enviar atualizações de status da corrida (motorista a caminho, chegou, corrida iniciada, finalizada) usando novas mensagens.
-
-### Estrutura sugerida de filas
-- `corridas_pendentes`: novas solicitações de corrida.
-- `notificacoes_motorista_{id}`: notificações para cada motorista.
-- `notificacoes_passageiro_{id}`: notificações para cada passageiro.
-
-### Possíveis extensões
-- Persistência das corridas em banco de dados.
-- Sistema de avaliação de motoristas e passageiros.
-- Simulação de geolocalização.
-
-### Exemplo de fluxo
-1. Passageiro solicita corrida → mensagem vai para `corridas_pendentes`.
-2. Motoristas recebem a mensagem e um deles aceita.
-3. Motorista envia confirmação para `notificacoes_passageiro_{id}`.
-4. Passageiro recebe atualização de status conforme a corrida avança.
-
 ---
 
 ## Pré-requisitos
