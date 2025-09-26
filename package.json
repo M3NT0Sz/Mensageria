@@ -1,46 +1,16 @@
 {
-  "name": "sistema-mensageria",
-  "version": "2.0.0",
-  "description": "Sistema completo de mensageria com RabbitMQ - Backend Node.js + Frontend React",
-  "private": true,
-  "workspaces": [
-    "servidor",
-    "produtor", 
-    "consumidor"
-  ],
+  "name": "mensageria",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "install:all": "npm install && npm run install:servidor && npm run install:produtor && npm run install:consumidor",
-    "install:servidor": "cd servidor && npm install",
-    "install:produtor": "cd produtor && npm install", 
-    "install:consumidor": "cd consumidor && npm install",
-    "start": "concurrently \"npm run start:servidor\" \"npm run start:produtor\" \"npm run start:consumidor\"",
-    "start:servidor": "cd servidor && npm run dev",
-    "start:produtor": "cd produtor && npm run dev",
-    "start:consumidor": "cd consumidor && npm run dev",
-    "build": "npm run build:produtor && npm run build:consumidor",
-    "build:produtor": "cd produtor && npm run build",
-    "build:consumidor": "cd consumidor && npm run build",
-    "clean": "rimraf servidor/node_modules produtor/node_modules consumidor/node_modules produtor/dist consumidor/dist",
-    "lint": "npm run lint:produtor && npm run lint:consumidor",
-    "lint:produtor": "cd produtor && npm run lint",
-    "lint:consumidor": "cd consumidor && npm run lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "rabbitmq",
-    "mensageria", 
-    "nodejs",
-    "react",
-    "microservices",
-    "message-queue"
-  ],
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "rimraf": "^5.0.5"
-  },
-  "engines": {
-    "node": ">=16.0.0",
-    "npm": ">=8.0.0"
+  "dependencies": {
+    "amqplib": "^0.10.9",
+    "dotenv": "^17.2.1"
   }
 }
