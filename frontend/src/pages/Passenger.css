@@ -1,0 +1,287 @@
+/* Passenger Page - Uber Style */
+.passenger {
+  min-height: 100vh;
+  background-color: var(--uber-light-gray);
+}
+
+.passenger-standalone {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.passenger-header {
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--uber-white);
+  border-bottom: 1px solid var(--uber-border);
+}
+
+.passenger-header h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--uber-black);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.passenger-header p {
+  font-size: 18px;
+  color: var(--uber-gray);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Login Section */
+.login-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: var(--uber-light-gray);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.login-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--uber-black);
+  margin: 20px 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.login-header p {
+  color: var(--uber-gray);
+  font-size: 16px;
+  margin: 0;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--uber-black);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid var(--uber-border);
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  background: var(--uber-white);
+  color: var(--uber-black);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--uber-black);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-input::placeholder {
+  color: var(--uber-gray);
+}
+
+/* Content Area */
+.passenger-content {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 32px;
+}
+
+/* Ride Request Card */
+.ride-request-card {
+  background: var(--uber-white);
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--uber-border);
+}
+
+.ride-request-card h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--uber-black);
+  margin: 0 0 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ride-form {
+  display: grid;
+  gap: 24px;
+}
+
+.location-input {
+  position: relative;
+}
+
+.location-input .form-input {
+  padding-left: 50px;
+}
+
+.location-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--uber-gray);
+}
+
+/* Ride Status Card */
+.ride-status-card {
+  background: var(--uber-white);
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--uber-border);
+  border-left: 4px solid var(--uber-green);
+}
+
+.ride-info {
+  margin-bottom: 24px;
+}
+
+.ride-id {
+  font-size: 14px;
+  color: var(--uber-gray);
+  margin-bottom: 16px;
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+}
+
+.ride-route {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.route-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.route-item strong {
+  font-weight: 600;
+  color: var(--uber-black);
+}
+
+.ride-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--uber-green);
+  padding: 16px 0;
+  border-top: 1px solid var(--uber-border);
+}
+
+.driver-info {
+  padding: 16px 20px;
+  background: var(--uber-light-gray);
+  border-radius: 8px;
+  margin-top: 16px;
+  font-weight: 500;
+  color: var(--uber-black);
+}
+
+/* Status Indicator */
+.ride-status {
+  margin-top: 24px;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.status-yellow {
+  background: rgba(255, 193, 7, 0.1);
+  color: #f57c00;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.status-blue {
+  background: rgba(31, 182, 255, 0.1);
+  color: var(--uber-blue);
+  border: 1px solid rgba(31, 182, 255, 0.3);
+}
+
+.status-green {
+  background: rgba(0, 197, 105, 0.1);
+  color: var(--uber-green);
+  border: 1px solid rgba(0, 197, 105, 0.3);
+}
+
+.status-red {
+  background: rgba(255, 23, 68, 0.1);
+  color: var(--uber-red);
+  border: 1px solid rgba(255, 23, 68, 0.3);
+}
+
+/* Spinner */
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid var(--uber-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .passenger-content {
+    padding: 24px 16px;
+  }
+  
+  .ride-request-card,
+  .ride-status-card {
+    padding: 24px 20px;
+  }
+  
+  .passenger-header h1 {
+    font-size: 24px;
+  }
+  
+  .passenger-header p {
+    font-size: 16px;
+  }
+  
+  .login-section {
+    padding: 40px 20px;
+  }
+}
