@@ -251,254 +251,136 @@ O sistema foi organizado em três módulos principais:
 
 ---
 
-# 🚗 **PROJETO FUTURO: Sistema de Corridas (Tipo Uber)**
+**Desenvolvido com ❤️ usando Node.js, React e RabbitMQ**
 
-## 🎯 **Visão Geral**
+Aplicação Node.js para envio e consumo de mensagens utilizando RabbitMQ.
 
-Sistema completo de corridas utilizando a base de mensageria já desenvolvida, expandindo para incluir funcionalidades de geolocalização, autenticação, WebSockets e interface moderna para passageiros e motoristas.
 
-## 🏗️ **Arquitetura Planejada**
+## Projeto Futuro: Sistema de Notificações para Corridas de Carro (tipo Uber)
 
-### **Stack Tecnológica**
-- **Backend**: Node.js + Express + MySQL + Socket.io
-- **Frontend**: React + Socket.io-client + Axios  
-- **Mensageria**: RabbitMQ (sistema atual expandido)
-- **Autenticação**: JWT + Google OAuth + bcrypt
-- **Geolocalização**: OpenStreetMap + Nominatim API (gratuitas)
-- **Deploy**: Docker Compose
+### Descrição
+Este projeto pode ser expandido para simular um sistema de corridas semelhante ao Uber, utilizando mensageria para comunicação entre passageiros e motoristas.
 
-### **Estrutura de Filas RabbitMQ**
-```
-corridas_solicitadas      # Novas solicitações de corrida
-corridas_aceitas         # Corridas aceitas pelos motoristas  
-status_corrida          # Atualizações de status em tempo real
-notificacoes_push       # Notificações gerais do sistema
-avaliacoes_pendentes    # Avaliações a serem processadas
-```
+### Como funcionaria
+- Passageiros solicitam corridas (publicam mensagens em uma fila de corridas pendentes).
+- Motoristas recebem notificações em tempo real sobre novas solicitações (consomem da fila de corridas pendentes).
+- Ao aceitar uma corrida, o motorista publica uma mensagem em uma fila específica do passageiro, notificando-o.
+- O sistema pode enviar atualizações de status da corrida (motorista a caminho, chegou, corrida iniciada, finalizada) usando novas mensagens.
 
-### **Banco de Dados MySQL**
-```sql
--- Tabela de usuários (passageiros e motoristas)
-usuarios (
-  id, nome, email, senha_hash, tipo, telefone, 
-  foto_url, provider, provider_id, created_at, updated_at
-)
+### Estrutura sugerida de filas
+- `corridas_pendentes`: novas solicitações de corrida.
+- `notificacoes_motorista_{id}`: notificações para cada motorista.
+- `notificacoes_passageiro_{id}`: notificações para cada passageiro.
 
--- Dados específicos dos motoristas
-motoristas (
-  user_id, cnh, placa_veiculo, modelo_veiculo, 
-  cor_veiculo, disponivel, latitude, longitude, updated_at
-)
+### Possíveis extensões
+- Persistência das corridas em banco de dados.
+- Sistema de avaliação de motoristas e passageiros.
+- Simulação de geolocalização.
 
--- Registro das corridas
-corridas (
-  id, passageiro_id, motorista_id, origem_lat, origem_lng,
-  destino_lat, destino_lng, origem_endereco, destino_endereco,
-  status, preco, distancia_km, tempo_estimado, created_at, finished_at
-)
-
--- Sistema de avaliações
-avaliacoes (
-  id, corrida_id, avaliador_id, avaliado_id, 
-  nota, comentario, created_at
-)
-
--- Histórico de posições (para tracking)
-posicoes_corrida (
-  id, corrida_id, latitude, longitude, timestamp
-)
-```
-
-## 🛠️ **APIs Gratuitas Integradas**
-
-### **Mapas e Geolocalização**
-- **OpenStreetMap**: Mapas base gratuitos
-- **Nominatim**: Geocoding (endereço → coordenadas) gratuito
-- **OSRM**: Cálculo de rotas e tempo estimado gratuito
-- **Leaflet**: Biblioteca JavaScript para mapas interativos
-
-### **Autenticação**
-- **Google OAuth 2.0**: Login social gratuito (1M requests/mês)
-- **JWT**: Sistema próprio de tokens
-
-## 🚀 **Roadmap de Desenvolvimento (3-4 semanas)**
-
-### **📅 Semana 1: Fundação e Autenticação**
-- [x] Configurar MySQL e migrations
-- [x] Sistema de autenticação completo (JWT + Google OAuth)
-- [x] Estrutura base das APIs (usuários, motoristas)
-- [x] Middleware de autenticação e autorização
-
-### **📅 Semana 2: Geolocalização e Core Business**
-- [ ] Integração com APIs de mapas (OpenStreetMap + Nominatim)
-- [ ] Sistema de corridas (CRUD completo)
-- [ ] Cálculo automático de preços e rotas
-- [ ] WebSockets básicos para notificações
-
-### **📅 Semana 3: Interfaces e Tempo Real**
-- [ ] App do passageiro (solicitar, acompanhar corridas)
-- [ ] App do motorista (receber, aceitar, atualizar status)
-- [ ] WebSockets avançados para tracking em tempo real
-- [ ] Integração com sistema de mensageria existente
-
-### **📅 Semana 4: Funcionalidades Avançadas**
-- [ ] Sistema de avaliações bidirecional
-- [ ] Histórico completo de corridas
-- [ ] Dashboard administrativo (evolução do sistema atual)
-- [ ] Testes, otimizações e deployment
-
-## 💡 **Funcionalidades Planejadas**
-
-### **👤 Passageiro**
-- ✅ Cadastro/Login (email + senha + Google)
-- ✅ Solicitar corrida (origem/destino via mapa ou endereço)
-- ✅ Ver motoristas disponíveis no mapa em tempo real
-- ✅ Visualizar preço estimado antes de confirmar
-- ✅ Acompanhar corrida em tempo real no mapa
-- ✅ Chat/comunicação com motorista
-- ✅ Avaliar motorista após corrida
-- ✅ Histórico completo de corridas
-- ✅ Perfil e configurações
-
-### **🚗 Motorista**
-- ✅ Cadastro/Login + dados do veículo (CNH, placa, modelo)
-- ✅ Toggle disponibilidade (online/offline)
-- ✅ Receber notificações de solicitações próximas
-- ✅ Aceitar/rejeitar corridas com informações completas
-- ✅ Navegação integrada para origem/destino
-- ✅ Atualizar status (a caminho, chegou, iniciou, finalizou)
-- ✅ Chat/comunicação com passageiro
-- ✅ Avaliar passageiro após corrida
-- ✅ Histórico e ganhos
-- ✅ Perfil e configurações do veículo
-
-### **🔧 Sistema**
-- ✅ Cálculo automático de preço por distância/tempo
-- ✅ Algoritmo de matching (motorista mais próximo)
-- ✅ Notificações push em tempo real
-- ✅ Sistema de avaliações com média
-- ✅ Dashboard administrativo com métricas
-- ✅ Sistema de mensageria para auditoria
-- ✅ Geofencing para áreas de atendimento
-
-## 📁 **Estrutura de Projeto Expandida**
-```
-ride-system/
-├── backend/                    # API principal expandida
-│   ├── src/
-│   │   ├── controllers/        # Lógica de negócio
-│   │   │   ├── auth.js        # Autenticação e autorização
-│   │   │   ├── users.js       # Gestão de usuários
-│   │   │   ├── rides.js       # Sistema de corridas
-│   │   │   ├── ratings.js     # Sistema de avaliações
-│   │   │   └── geo.js         # Serviços de geolocalização
-│   │   ├── models/            # Modelos do banco MySQL
-│   │   │   ├── User.js
-│   │   │   ├── Driver.js
-│   │   │   ├── Ride.js
-│   │   │   └── Rating.js
-│   │   ├── routes/            # Rotas da API
-│   │   ├── middleware/        # Auth, validação, CORS
-│   │   ├── services/          # Integração APIs externas
-│   │   │   ├── maps.js        # OpenStreetMap/Nominatim
-│   │   │   ├── oauth.js       # Google OAuth
-│   │   │   └── rabbitmq.js    # Sistema de mensageria
-│   │   ├── websockets/        # Socket.io para tempo real
-│   │   └── database/          # Migrations e seeds
-├── passenger-app/             # App React do passageiro
-│   ├── src/
-│   │   ├── components/        # Componentes reutilizáveis
-│   │   ├── pages/             # Páginas principais
-│   │   │   ├── Login.jsx
-│   │   │   ├── RequestRide.jsx
-│   │   │   ├── TrackRide.jsx
-│   │   │   └── History.jsx
-│   │   ├── services/          # API calls e WebSocket
-│   │   └── hooks/             # Custom hooks React
-├── driver-app/                # App React do motorista
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── AcceptRide.jsx
-│   │   │   └── ActiveRide.jsx
-│   │   └── services/
-├── admin-dashboard/           # Evolução do sistema atual
-│   └── src/                   # Monitoramento + métricas
-├── shared/                    # Utilitários compartilhados
-│   ├── constants/             # Status, tipos, etc.
-│   └── utils/                 # Funções auxiliares
-└── docker-compose.yml         # Deploy completo
-```
-
-## 🔄 **Fluxos de Negócio Principais**
-
-### **Fluxo de Solicitação de Corrida**
-1. Passageiro define origem/destino no mapa
-2. Sistema calcula preço e tempo estimado
-3. Passageiro confirma → mensagem para `corridas_solicitadas`
-4. Motoristas próximos recebem notificação via WebSocket
-5. Primeiro motorista aceita → mensagem para `corridas_aceitas`
-6. Passageiro notificado via WebSocket
-7. Início do tracking em tempo real
-
-### **Fluxo de Execução da Corrida**
-1. Motorista atualiza status "A caminho" → `status_corrida`
-2. Sistema envia posição em tempo real
-3. Motorista atualiza "Chegou no local" → notificação push
-4. Motorista atualiza "Corrida iniciada" → tracking ativo
-5. Motorista atualiza "Corrida finalizada" → cálculo final
-6. Ambos avaliam um ao outro → `avaliacoes_pendentes`
-
-## 🎨 **Design e UX Planejado**
-
-### **App Passageiro**
-- **Tela Principal**: Mapa com localização atual
-- **Solicitar Corrida**: Busca de endereços + seleção no mapa
-- **Aguardando**: Lista de motoristas próximos
-- **Em Corrida**: Tracking em tempo real + chat
-- **Finalização**: Avaliação + resumo da corrida
-
-### **App Motorista**
-- **Dashboard**: Status online/offline + estatísticas
-- **Nova Solicitação**: Card com detalhes + aceitar/rejeitar
-- **Corrida Ativa**: Navegação + atualizações de status
-- **Histórico**: Ganhos + avaliações recebidas
-
-## 🔧 **Configurações Técnicas**
-
-### **Variáveis de Ambiente Expandidas**
-```env
-# Banco de dados
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=ride_system
-DB_USER=root
-DB_PASSWORD=
-
-# APIs externas
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-NOMINATIM_URL=https://nominatim.openstreetmap.org
-OSRM_URL=http://router.project-osrm.org
-
-# JWT
-JWT_SECRET=
-JWT_EXPIRES_IN=7d
-
-# RabbitMQ (existente)
-RABBIT_URL=amqp://localhost
-```
-
-### **Portas Utilizadas**
-- **Backend API**: 3001
-- **App Passageiro**: 3000
-- **App Motorista**: 3003
-- **Admin Dashboard**: 3002 (existente)
-- **MySQL**: 3306
-- **RabbitMQ**: 5672, 15672
+### Exemplo de fluxo
+1. Passageiro solicita corrida → mensagem vai para `corridas_pendentes`.
+2. Motoristas recebem a mensagem e um deles aceita.
+3. Motorista envia confirmação para `notificacoes_passageiro_{id}`.
+4. Passageiro recebe atualização de status conforme a corrida avança.
 
 ---
 
-**Desenvolvido com ❤️ usando Node.js, React e RabbitMQ**
+## Pré-requisitos
+
+- Node.js instalado
+- Conta RabbitMQ (pode usar [CloudAMQP](https://www.cloudamqp.com/))
+- Variáveis de ambiente configuradas (ver `.env_example`)
+
+---
+
+## Instalação
+
+1. Clone o repositório:
+    ```sh
+    git clone <url-do-repositorio>
+    cd Mensageria
+    ```
+
+2. Instale as dependências:
+    ```sh
+    npm install
+    ```
+
+3. Configure o arquivo `.env` conforme o exemplo em `.env_example`:
+    ```
+    RABBIT_URL=<sua_url_rabbitmq>
+    QUEUE=notificacoes
+    ```
+
+---
+
+## Uso
+
+### Publicar uma notificação
+
+Execute o produtor passando o número do pedido como argumento:
+
+```sh
+node producer.js 123
+```
+
+Isso enviará uma mensagem para a fila configurada.
+
+### Consumir notificações
+
+Execute o consumidor para receber as mensagens da fila:
+
+```sh
+node consumer.js
+```
+
+---
+
+## Estrutura dos arquivos
+
+- `producer.js`: Publica mensagens na fila.
+- `consumer.js`: Consome mensagens da fila.
+- `.env_example`: Exemplo de configuração de ambiente.
+- `.env`: Suas configurações de ambiente (NÃO versionar).
+- `package.json`: Dependências e scripts do projeto.
+
+---
+
+## Licença
+
+ISC
+
+---
+
+## Autor
+
+
+[Matheus Mendes dos Santos](https://github.com/M3NT0Sz)
+
+---
+
+**Observação:** Não esqueça de adicionar o arquivo `.env` ao seu `.gitignore` para evitar expor credenciais sensíveis.
+
+    ## O que foi feito neste projeto
+
+    - **Configuração do ambiente Node.js**: O projeto foi iniciado com Node.js, incluindo as dependências `amqplib` (para integração com RabbitMQ) e `dotenv` (para variáveis de ambiente).
+    - **Criação do arquivo `.env_example`**: Exemplo de configuração das variáveis de ambiente necessárias para conectar ao RabbitMQ (`RABBIT_URL` e `QUEUE`).
+    - **Implementação do produtor (`producer.js`)**:
+        - Lê variáveis de ambiente.
+        - Recebe o número do pedido via linha de comando.
+        - Monta um payload com número do pedido, mensagem e status.
+        - Publica a mensagem na fila RabbitMQ configurada.
+    - **Implementação do consumidor (`consumer.js`)**:
+        - Lê variáveis de ambiente.
+        - Conecta à mesma fila RabbitMQ.
+        - Consome mensagens da fila, faz o parse do payload e exibe no console.
+        - Faz o acknowledge das mensagens processadas.
+    - **Documentação**:
+        - README com instruções de instalação, configuração, uso e estrutura dos arquivos.
+        - Adicionado o link do autor para o GitHub.
+    - **Gerenciamento de dependências**:
+        - `package.json` configurado com as dependências necessárias.
+    - **Boas práticas**:
+        - Orientação para não versionar o arquivo `.env`.
+        - Sugestão de uso de serviços gratuitos como o CloudAMQP.
+        - Licença ISC definida.
